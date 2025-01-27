@@ -236,7 +236,7 @@ class ArpeggiatorModule(Module):
             self._advance_arpeggio(active)
 
         # If no notes are active but we have a note playing, turn it off
-        if len(num_active) == 0 and self.last_note_playing is not None:
+        if num_active == 0 and self.last_note_playing is not None:
             self.note_callback(self.last_note_playing, False, source="arpeggiator")
             self.last_note_playing = None
 
