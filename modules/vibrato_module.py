@@ -10,7 +10,7 @@ class VibratoModule(Module):
     'depth_ms' sets how many ms we modulate around base_delay_ms,
     'lfo_rate' sets the LFO speed in Hz.
     """
-    def __init__(self, sample_rate=44100, base_delay_ms=10.0, depth_ms=5.0, lfo_rate=5.0, wave='sine'):
+    def __init__(self, sample_rate=44100, base_delay_ms=10.0, depth_ms=1.0, lfo_rate=5.0, wave='sine'):
         self.sample_rate = sample_rate
         self.base_delay_ms = base_delay_ms
         self.depth_ms = depth_ms
