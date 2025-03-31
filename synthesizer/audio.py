@@ -2,9 +2,7 @@
 
 import pyaudio
 import numpy as np
-import threading
 from synthesizer.limiter import Limiter
-from synthesizer.keyboard_input import KeyboardInput
 
 class AudioManager:
     """
@@ -35,8 +33,7 @@ class AudioManager:
         self.stopped = False
 
         # Keyboard thread
-        self.keyboard_thread = None
-        self._keyboard_running = False
+        self.keyboard_listener = None
 
     # ─────────────────────────────────────────
     # 1. GLOBAL PARAMS
@@ -186,23 +183,6 @@ class AudioManager:
         self.stream.start_stream()
         self.running = True
         print("Audio stream started. Press keys to play notes...")
-
-        # Keyboard thread
-        self._keyboard_running = True
-        self.keyboard_thread = threading.Thread(target=self._keyboard_loop, daemon=True)
-        self.keyboard_thread.start()
-
-    def _keyboard_loop(self):
-        """
-        Runs in a separate thread; listens for keyboard events.
-        """
-        kb_input = KeyboardInput(self.note_handler, self)
-        try:
-            kb_input.start()  # blocks until ESC or an error
-        except Exception as e:
-            print(f"Keyboard thread error: {e}")
-        finally:
-            self.stop()
 
     def stop_stream(self):
         """

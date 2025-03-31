@@ -1,8 +1,8 @@
 from pynput import keyboard
 
 class KeyboardInput:
-    def __init__(self, note_callback, audio_manager):
-        self.note_callback = note_callback
+    def __init__(self, audio_manager):
+        self.note_callback = audio_manager.note_handler
         self.audio_manager = audio_manager
         self.key_to_note = {
             'a': 60,  # C4
@@ -20,26 +20,24 @@ class KeyboardInput:
             'k': 72,  # C5
         }
         self.pressed_keys = set()
-        self.listener = None
+        self.listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
 
     def handle_key(self, key, is_press):
         """Unified key handler for press and release events."""
-        if hasattr(key, 'char') and key.char:
-            key_char = key.char.lower()
-            if key_char in self.key_to_note:
-                note = self.key_to_note[key_char]
-                if is_press and key_char not in self.pressed_keys:
-                    self.note_callback(note, True)  # Note-on
-                    self.pressed_keys.add(key_char)
-                elif not is_press and key_char in self.pressed_keys:
-                    self.pressed_keys.remove(key_char)
-                    self.note_callback(note, False)  # Note-off
-
-        if key == keyboard.Key.esc and is_press:
-            print("Escape key pressed. Exiting...")
-            self.audio_manager.stop()  # Stop the audio playback
-            if self.listener:
-                self.listener.stop()  # Stop the listener explicitly
+        try:
+            if hasattr(key, 'char') and key.char:
+                key_char = key.char.lower()
+                if key_char in self.key_to_note:
+                    note = self.key_to_note[key_char]
+                    if is_press and key_char not in self.pressed_keys:
+                        self.note_callback(note, True)  # Note-on
+                        self.pressed_keys.add(key_char)
+                    elif not is_press and key_char in self.pressed_keys:
+                        self.pressed_keys.remove(key_char)
+                        self.note_callback(note, False)  # Note-off
+        except Exception as e:
+            print(f"Passing over Exception: {e}")
+            pass
 
     def on_press(self, key):
         """Handle key press events."""
@@ -51,6 +49,4 @@ class KeyboardInput:
 
     def start(self):
         """Start listening to keyboard events."""
-        self.listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
         self.listener.start()  # Start the listener
-        self.listener.join()  # Block until the listener is stopped

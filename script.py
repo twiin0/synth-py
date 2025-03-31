@@ -3,14 +3,12 @@ from synthesizer.audio import AudioManager
 from gui.synth_gui import SynthGUI
 
 def main():
-    audio_manager = AudioManager(sample_rate=44100, buffer_size=1024)
-    customtkinter.set_appearance_mode("Dark")
-    customtkinter.set_default_color_theme("blue")
+    audio_manager = AudioManager(sample_rate=44100, buffer_size=2048)
     
     app = SynthGUI(audio_manager)
-    # Optionally auto-start the stream or let user press "Start Synth"
-    # audio_manager.start_stream()
-
+    from synthesizer.keyboard_input import KeyboardInput
+    keyboard_input = KeyboardInput(audio_manager=audio_manager)
+    keyboard_input.start()
     app.mainloop()
     audio_manager.stop_stream()
 
