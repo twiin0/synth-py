@@ -1,0 +1,9 @@
+customtkinter==5.2.2
+darkdetect==0.8.0
+evdev==1.9.1
+numpy==2.2.4
+packaging==24.2
+PyAudio==0.2.14
+pynput==1.8.1
+python-xlib==0.33
+six==1.17.0

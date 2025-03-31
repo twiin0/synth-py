@@ -1,2 +1,8 @@
 # Virtual Environment
 synth/
+synthvenv/
+
+# Pycache
+synthesizer/__pycache__/
+modules/__pycache__/
+gui/__pycache__/
