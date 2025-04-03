@@ -1,6 +1,5 @@
 # Virtual Environment
-synth/
-synthvenv/
+*venv*
 
 # Pycache
 synthesizer/__pycache__/
