@@ -153,7 +153,7 @@ class ModuleFrame(customtkinter.CTkFrame):
         elif "vibrato" in module_type_str:
             return VibratoModule(sample_rate=44100, base_delay_ms=10.0, depth_ms=5.0, lfo_rate=5.0, wave='sine')
         elif "arpeggiator" in module_type_str:
-            return ArpeggiatorModule(note_callback=self.audio_manager.note_handler, sample_rate=44100, mode="up", rate=6.0, hold=False)
+            return ArpeggiatorModule(note_callback=self.audio_manager.keyboard_handler.handle_note, sample_rate=44100, mode="up", rate=6.0, hold=False)
         else:
             # fallback => poly synth with no wave
             return PolySynthModule(sample_rate=44100, max_voices=8, waveform="none")

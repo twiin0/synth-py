@@ -74,20 +74,37 @@ class KeyboardHandler:
     def set_arpeggiator(self, arpeggiator):
         self.arpeggiator = arpeggiator
 
-    def handle_note(self, midi_note, is_press):
+    def handle_note(self, midi_note, is_press, source="user"):
         """Handles keyboard events and sends notes to the appropriate modules."""
-        if self.arpeggiator:
-            if is_press:
-                self.arpeggiator.note_on(midi_note)
-            else:
-                self.arpeggiator.note_off(midi_note)
-        else:
+        if source == "user":
+            arpeggiator = None
             for module in self.module_chain:
-                if hasattr(module, 'note_on') and hasattr(module, 'note_off'):
-                    if is_press:
-                        module.note_on(midi_note)
-                    else:
-                        module.note_off(midi_note)
+                if module.__class__.__name__ == "ArpeggiatorModule":
+                    arpeggiator = module
+                    break
+
+            if arpeggiator:
+                if is_press:
+                    arpeggiator.note_on(midi_note)
+                else:
+                    arpeggiator.note_off(midi_note)
+            else:
+                for module in self.module_chain:
+                    if hasattr(module, 'note_on') and hasattr(module, 'note_off'):
+                        if is_press:
+                            module.note_on(midi_note)
+                        else:
+                            module.note_off(midi_note)
+
+        elif source == "arpeggiator":
+            for module in self.module_chain:
+                if module.__class__.__name__ != "ArpeggiatorModule":
+                    if hasattr(module, 'note_on') and hasattr(module, 'note_off'):
+                        if is_press:
+                            module.note_on(midi_note)
+                        else:
+                            module.note_off(midi_note)
+
 
 class AudioManager:
     def __init__(self, sample_rate=44100, buffer_size=2048):

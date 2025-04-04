@@ -194,15 +194,15 @@ class SynthGUI(customtkinter.CTk):
         val = float(value)
         self.volume_entry_var.set(f"{val:.2f}")
         # Pass volume to AudioManager
-        if hasattr(self.audio_manager, 'set_global_volume'):
-            self.audio_manager.set_global_volume(val)
+        if hasattr(self.audio_manager.global_controls, 'set_global_volume'):
+            self.audio_manager.global_controls.set_global_volume(val)
 
     def on_gain_change(self, value):
         val = float(value)
         self.gain_entry_var.set(f"{val:.2f}")
         # Pass gain to AudioManager
-        if hasattr(self.audio_manager, 'set_global_gain'):
-            self.audio_manager.set_global_gain(val)
+        if hasattr(self.audio_manager.global_controls, 'set_global_gain'):
+            self.audio_manager.global_controls.set_global_gain(val)
 
     def on_start_synth(self):
         self.audio_manager.start_stream()
