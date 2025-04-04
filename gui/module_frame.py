@@ -45,7 +45,7 @@ class ModuleFrame(customtkinter.CTkFrame):
         # Create the actual module instance
         self.module = self.create_module(self.module_type)
         # Insert it into the chain
-        self.audio_manager.module_chain.append(self.module)
+        self.audio_manager.module_chain_manager.add_module(self.module)
         self.configure(
             fg_color="#666666", 
             corner_radius=6,
@@ -165,7 +165,7 @@ class ModuleFrame(customtkinter.CTkFrame):
         Then refresh the staging layout.
         """
         frames = self.parent_gui.staging_modules
-        chain = self.audio_manager.module_chain
+        chain = self.audio_manager.module_chain_manager.module_chain
 
         current_index = frames.index(self)
         if current_index > 0:
@@ -189,7 +189,7 @@ class ModuleFrame(customtkinter.CTkFrame):
         and also swap in audio_manager.module_chain.
         """
         frames = self.parent_gui.staging_modules
-        chain = self.audio_manager.module_chain
+        chain = self.audio_manager.module_chain_manager.module_chain
 
         current_index = frames.index(self)
         if current_index < len(frames) - 1:
@@ -208,8 +208,8 @@ class ModuleFrame(customtkinter.CTkFrame):
             self.parent_gui.refresh_staging_layout()
             
     def remove_self(self):
-        if self.module in self.audio_manager.module_chain:
-            self.audio_manager.module_chain.remove(self.module)
+        if self.module in self.audio_manager.module_chain_manager.module_chain:
+            self.audio_manager.module_chain_manager.module_chain.remove(self.module)
         self.parent_gui.remove_module(self)
 
     # ---------------------------------------------------------

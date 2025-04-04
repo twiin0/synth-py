@@ -35,9 +35,11 @@ class AudioManager:
         # Keyboard thread
         self.keyboard_listener = None
 
-    # ─────────────────────────────────────────
-    # 1. GLOBAL PARAMS
-    # ─────────────────────────────────────────
+    """
+    ─────────────────────────────────────────
+     1. Setting GLOBAL PARAMS
+    ─────────────────────────────────────────
+    """
     def set_global_volume(self, vol):
         """
         Simple global volume that scales final mix.
@@ -88,9 +90,11 @@ class AudioManager:
     # Or if you want to do this in one shot, 
     # you'd do set_adsr() with all 4.
 
-    # ─────────────────────────────────────────
-    # 2. KEYBOARD NOTE HANDLER
-    # ─────────────────────────────────────────
+    """
+    ─────────────────────────────────────────
+     2. KEYBOARD NOTE HANDLER
+    ─────────────────────────────────────────
+    """
     def note_handler(self, midi_note, is_press, source="user"):
         """
         If source="user", we check if there's an arpeggiator. If so, 
@@ -129,9 +133,11 @@ class AudioManager:
                             module.note_off(midi_note)
 
 
-    # ─────────────────────────────────────────
-    # 3. AUDIO CALLBACK
-    # ─────────────────────────────────────────
+    '''
+    ─────────────────────────────────────────
+     3. AUDIO CALLBACK
+    ─────────────────────────────────────────
+    '''
     def audio_callback(self, in_data, frame_count, time_info, status):
         """
         Streams audio by passing 'None' into the first module
@@ -157,10 +163,11 @@ class AudioManager:
         # Convert to int16
         out_int16 = (processed * 32767).astype(np.int16)
         return (out_int16.tobytes(), pyaudio.paContinue)
-
-    # ─────────────────────────────────────────
-    # 4. START/STOP STREAM
-    # ─────────────────────────────────────────
+    """
+    ─────────────────────────────────────────
+     4. START/STOP STREAM
+    ─────────────────────────────────────────
+    """
     def start_stream(self):
         """
         Initialize & start PyAudio stream, plus keyboard thread.

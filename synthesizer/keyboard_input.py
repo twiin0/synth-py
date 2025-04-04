@@ -2,7 +2,7 @@ from pynput import keyboard
 
 class KeyboardInput:
     def __init__(self, audio_manager):
-        self.note_callback = audio_manager.note_handler
+        self.note_callback = audio_manager.keyboard_handler.handle_note
         self.audio_manager = audio_manager
         self.key_to_note = {
             'a': 60,  # C4
